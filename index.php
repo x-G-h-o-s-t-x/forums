@@ -1,31 +1,29 @@
-<?php
-header('Content-type: text/html; charset=UTF-8');
-echo '<!doctype html>';
-echo '<html lang="en">';
+<?php header('Content-type: text/html; charset=UTF-8'); ?>
+<!doctype html>
+<html lang="en">
 
-echo '<head>';
-    echo '<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
-    echo '<meta charset="utf-8"/>';
-    echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>';
-    echo '<title>', 'Index', '</title>';
-    echo '<link rel="stylesheet" type="text/css" href="css/dark.css" media="screen"/>';
-    echo '<link rel="shortcut icon" type="image/ico" href="images/celtic_cross.ico"/>';
-echo '</head>';
-    echo '<body>';
+<head>
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css" href="css/dark.css" media="screen"/>
+    <link rel="shortcut icon" type="image/ico" href="images/celtic_cross.ico"/>
+</head>
+    <body>
 
-    echo '<header>';
-        echo '<div class="logo">';
-            echo '<img src="images/codemafia.png" alt=""/><br/>';
-        echo '</div>';
-        echo '<div class="padder"></div>';
-    echo '</header>';
+    <header>
+        <div class="logo">
+            <img src="images/codemafia.png" alt=""/><br/>
+        </div>
+        <div class="padder"></div>
+    </header>
 
-    echo '<nav>';
-        echo '<ul>';
-            echo '<li><a class="active" href="index.php">Forums</a></li>';
-        echo '</ul>';
-    echo '</nav>';
+    <nav>
+        <ul>
+            <li><a class="active" href="index.php">Forums</a></li>
+        </ul>
+    </nav>
 
-    echo '</body>';
-echo '</html>';
-?>
+    </body>
+</html>
