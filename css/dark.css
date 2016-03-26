@@ -1,0 +1,28 @@
+/** Responsive Mobile Layout: 480px and below. */
+@media only screen and (max-width:480px) {
+
+}
+
+/** Responsive Tablet Layout: 481px to 768px. */
+@media only screen and (min-width:481px) and (max-width:768px) {
+
+}
+
+/** Responsive Desktop Layout: 769px to a max of screen size. */
+@media only screen and (min-width:769px) {
+
+}
+
+* {margin:0; padding:0; box-sizing:border-box;}/* Simple Reset */
+body {background:#212121; color:#408080; font-family:"HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;}
+a {color:#96C7D7;}
+
+header {margin:8px auto 2px auto; width:90%;}
+header .logo {width:50%; float:left;}
+header .padder {height:0; clear:both;}
+
+nav {background:#171717; border-top:1px solid #2D2D2D; border-bottom:1px solid #3E3E3E;}
+nav ul {font-size:0.75rem; text-align:left; list-style:none; list-style-image:none; padding:0; margin:0px auto 0px auto; width:90%;}
+nav ul li {display:inline-block; margin:10px 0px 7px 0px;}
+nav ul li a { color:#408080; background:#1D1D1D; border-top:1px solid #2B2B2B; border-left:1px solid #202020; border-right:1px solid #202020; border-top-left-radius:2px; border-top-right-radius:2px; text-decoration:none; padding:6px 8px 7px 8px;}
+nav ul li a.active {color:#96C7D7; background:#212121; border-top:1px solid #3E3E3E; border-left:1px solid #2D2D2D; border-right:1px solid #2D2D2D; border-top-left-radius:2px; border-top-right-radius:2px; text-decoration:none; padding:6px 8px 9px 8px;}
