@@ -1,0 +1,48 @@
+# This .htaccess file protects your .htaccess file itself, tries to stop malicious attacks.
+# it also add seo friendly options. combined with my own php setup
+# to also convert the "topics" links to look seo friendly check config settings to turn that on or off.
+# ---- Make Sure you upload it or you wont be protected. or get these benefits ----
+#
+
+IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
+
+DirectoryIndex index.php index.htm index.html
+
+<Files .htaccess>
+order allow,deny
+deny from all
+</files>
+
+<Limit GET POST>
+order deny,allow
+deny from all
+allow from all
+</Limit>
+
+<Limit PUT DELETE>
+order deny,allow
+deny from all
+</Limit>
+
+# php_value upload_max_filesize 50M
+# php_value post_max_size 50M
+# php_value max_execution_time 300
+# php_value max_input_time 300
+
+# Do not remove these lines, otherwise mod_rewrite rules will stop working correctly
+Options +FollowSymLinks
+RewriteEngine On
+
+# RewriteBase / = Public_html Folder (Change This If Placed In Different Directory)
+# Example: RewriteBase /subfolder_name/
+# Example: RewriteBase /
+RewriteBase /
+
+RewriteRule ^c([0-9]+)/.*?-([0-9]+)/index([0-9]+).html$ topic.php?cid=$1&tid=$2&page=$3 [L]
+
+RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+RewriteRule ^(.*)$ index.php [F,L]
