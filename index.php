@@ -25,5 +25,11 @@
         </ul>
     </nav>
 
+    <div class="secondary-nav">
+        <div>
+            <a href="index.php">Forums</a>
+        </div>
+    </div>
+
     </body>
 </html>
