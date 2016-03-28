@@ -1,4 +1,8 @@
 <?php header('Content-type: text/html; charset=UTF-8'); ?>
+<?php foreach(glob('core/classes/*.php') as $class_file): require_once($class_file); endforeach; ?>
+<?php foreach(glob('core/functions/*.php') as $function_file): require_once($function_file); endforeach; ?>
+<?php if(file_exists('core/config.php')): require_once('core/config.php'); else: die('Cannot Find Configuration File'); endif; ?>
+<?php debug($config->debug); ?>
 <!doctype html>
 <html lang="en">
 
@@ -7,8 +11,8 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Index</title>
-    <link rel="stylesheet" type="text/css" href="css/dark.css" media="screen"/>
-    <link rel="shortcut icon" type="image/ico" href="images/celtic_cross.ico"/>
+    <link rel="stylesheet" type="text/css" href="core/css/dark.css" media="screen"/>
+    <link rel="shortcut icon" type="image/ico" href="core/images/celtic_cross.ico"/>
 </head>
     <body>
 
