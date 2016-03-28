@@ -10,7 +10,7 @@
     <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>Index</title>
+    <title><?php echo $config->site_name; ?></title>
     <link rel="stylesheet" type="text/css" href="core/css/dark.css" media="screen"/>
     <link rel="shortcut icon" type="image/ico" href="core/images/celtic_cross.ico"/>
 </head>
@@ -18,7 +18,7 @@
 
     <header>
         <div class="logo">
-            <img src="images/codemafia.png" alt=""/><br/>
+            <img src="<?php echo $config->site_logo; ?>" alt=""/><br/>
         </div>
         <div class="padder"></div>
     </header>
