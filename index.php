@@ -25,13 +25,13 @@
 
     <nav>
         <ul>
-            <li><a class="active" href="index.php">Forums</a></li>
+            <li><a class="active" href="<?php echo seo('index.php'); ?>">Forums</a></li>
         </ul>
     </nav>
 
     <div class="secondary-nav">
         <div>
-            <a href="index.php">Forums</a>
+            <a href="<?php echo seo('index.php'); ?>">Forums</a>
         </div>
     </div>
 
