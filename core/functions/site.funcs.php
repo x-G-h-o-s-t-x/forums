@@ -24,7 +24,7 @@
                 if(preg_match('/topic.php\?cid=(\w+)&amp;tid=(\w+)&amp;page=(\w+)/i', $data, $matches)):
                     $title = null;
                     db::pdo()->query('SELECT * FROM `topics` WHERE `id` = :id LIMIT 1');
-                    db::pdo()->bind(':id', $matches[2]);
+                        db::pdo()->bind(array(':id' => $matches[2]));
                     db::pdo()->execute();
                         if(db::pdo()->count() > 0):
                             foreach(db::pdo()->result() as $link):
