@@ -1,7 +1,7 @@
 <?php
 // Prevent direct access from url to this file
-if(stristr(htmlentities($_SERVER['SCRIPT_NAME']), 'pdo.class.php')): // input your class file name here
-    header("Location:../index.php"); // input your index location here
+if(stristr(htmlentities($_SERVER['SCRIPT_NAME']), 'db.class.php')): // input your class file name here
+    header('Location:../../index.php'); // input your index location here
     die();
 endif;
 
@@ -54,23 +54,26 @@ class db {
 
     // binds values to placeholders
     // http://php.net/manual/en/pdostatement.bindvalue.php
-    public function bind($param, $value, $type = null) {
-        if(is_null($type)):
-            switch(true) {
-                case is_int($value):
-                    $type = PDO::PARAM_INT;
-                    break;
-                case is_bool($value):
-                    $type = PDO::PARAM_BOOL;
-                    break;
-                case is_null($value):
-                    $type = PDO::PARAM_NULL;
-                    break;
-                default:
-                    $type = PDO::PARAM_STR;
-            }
-        endif;
-        $this->query->bindValue($param, $value, $type);
+    public function bind($arr = array()) {
+        foreach($arr as $param => $value):
+            $type = null;
+                if(is_null($type)):
+                    switch(true) {
+                        case is_int($value):
+                            $type = PDO::PARAM_INT;
+                            break;
+                        case is_bool($value):
+                            $type = PDO::PARAM_BOOL;
+                            break;
+                        case is_null($value):
+                            $type = PDO::PARAM_NULL;
+                            break;
+                        default:
+                            $type = PDO::PARAM_STR;
+                    }
+                endif;
+            $this->query->bindValue($param, $value, $type);
+        endforeach;
     }
 
     // executes the pdo query
