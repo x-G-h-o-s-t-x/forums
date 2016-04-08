@@ -24,6 +24,7 @@ order deny,allow
 deny from all
 </Limit>
 
+# if server allows modding php_value from .htaccess then uncomment below.
 # php_value upload_max_filesize 50M
 # php_value post_max_size 50M
 # php_value max_execution_time 300
@@ -38,9 +39,11 @@ RewriteEngine On
 # Example: RewriteBase /
 RewriteBase /
 
+# rewrite rules for site seo function
 RewriteRule ^c([0-9]+)/.*?-([0-9]+)/index([0-9]+).html$ topic.php?cid=$1&tid=$2&page=$3 [L]
 RewriteRule ^(.*?)\.html$ $1.php [L]
 
+# extra conditions
 RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
 RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
 RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
