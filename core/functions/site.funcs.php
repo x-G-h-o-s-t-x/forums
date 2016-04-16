@@ -42,4 +42,46 @@
             endif;
     }
 
+    // theme changer
+    function theme() {
+        $themes = array();
+            foreach(glob('*/css/*.css') as $css):
+                $themes[] = preg_replace('/^(.*?)\/css\/(.*?).css$/msi', '$2', $css);
+            endforeach;
+        if(isset($_POST['change_theme']) and isset($_POST['new_theme']) and in_array(sanitize($_POST['new_theme']), $themes)):
+            $new_theme = sanitize($_POST['new_theme']);
+            setcookie('theme', $new_theme, time()+(60*60*24*365));
+            header('Location:'.$_SERVER['SCRIPT_NAME']);
+            exit();
+        endif;
+            if(isset($_COOKIE['theme']) and in_array(sanitize($_COOKIE['theme']), $themes)):
+                $theme = sanitize($_COOKIE['theme']);
+            else:
+                $theme = 'light';
+            endif;
+        if($theme == 'dark'):
+            ini_set('highlight.default', '#3DD909');
+            ini_set('highlight.keyword', '#04D8F3'); 
+            ini_set('highlight.string', '#E5CC0B');
+            ini_set('highlight.comment', '#FFAB01');
+            ini_set('highlight.html', '#000000');
+        endif;
+        return $theme;
+    }
+
+    //theme changer form
+    function theme_form(){
+        $results = null;
+        $themes = array();
+        $results .= '<form action="'.$_SERVER['SCRIPT_NAME'].'" method="post">';
+        $results .= '<select name="new_theme">';
+            foreach(glob('*/css/*.css') as $num => $css):
+                $themes[$num] = preg_replace('/^(.*?)\/css\/(.*?).css$/msi', '$2', $css);
+                $results .= '<option class="theme-option" value="'.$themes[$num].'">'.$themes[$num].'</option>';
+            endforeach;
+        $results .= '</select>';
+        $results .= '<input class="theme-submit-btn" type="submit" name="change_theme" value="set">';
+        $results .= '</form>';
+        return $results;
+    }
 ?>
