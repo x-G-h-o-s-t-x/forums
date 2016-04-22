@@ -17,6 +17,7 @@ class user {
     public function __wakeup() { throw new Exception('Cannot unserialize singleton'); }
     private static $instance;
 
+    // call to start the user instance
     public static function init(){
         $class = get_called_class(); // late-static-bound class name
             if(!isset(self::$instance[$class])):
