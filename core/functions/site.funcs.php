@@ -1,5 +1,5 @@
 <?php
-    /** function to turn errors on/off for debugging */
+    // function to turn errors on/off for debugging
     function debug($true) {
         if($true == 'true'):
             ini_set('display_errors', '1');
@@ -9,13 +9,41 @@
         endif;
     }
 
-    /** function for cleaning inputted text */
+    // function that will synchronize php and mysql timezones to user (script owner)
+    // defined timezone if not set will revert to a default of Europe/London
+    function sync_php_and_mysql_timezones($config){
+        $config->timezone = isset($config->timezone) ? $config->timezone : 'Europe/London';
+        date_default_timezone_set($config->timezone);
+        $now = new DateTime();
+        $minutes = $now->getOffset() / 60;
+        $segment = ($minutes < 0 ? -1 : 1);
+        $minutes = abs($minutes);
+        $hours = floor($minutes / 60);
+        $minutes -= $hours * 60;
+        $offset = sprintf('%+d:%02d', $hours*$segment, $minutes);
+        db::pdo()->query('SET time_zone = "'.$offset.'";');
+        db::pdo()->execute();
+    }
+
+    // function that will convert mysql DATETIME to user-friendly php time
+    // will also check if datetime matches today, yesterday, or later
+    function convert_datetime($date_time) {
+        if(strtotime($date_time) >= strtotime('today')):
+            return 'Today '.gmdate('h:ia', strtotime($date_time));
+        elseif(strtotime($date_time) >= strtotime('yesterday')):
+            return 'Yesterday '.gmdate('h:ia', strtotime($date_time));
+        else:
+            return gmdate('d.m.Y, h:ia', strtotime($date_time));
+        endif;
+    }
+
+    // function for cleaning inputted text
     function sanitize($data) {
         $data = htmlentities(get_magic_quotes_gpc() ? stripslashes($data) : $data, ENT_QUOTES, 'UTF-8');
         return $data;
     }
 
-    /** seo function */
+    // seo function
     function seo($data) {
         db::pdo()->query('SELECT * FROM `config`');
         db::pdo()->execute();
@@ -36,9 +64,23 @@
                 elseif(preg_match('/^(.*?).php$/i', $data)):
                     $data = preg_replace('/^(.*?).php$/i', '$1.html', $data);
                     return $data;
+                else:
+                    return $data;
                 endif;
             else:
                 return $data;
+            endif;
+    }
+
+    // Function that will convert a user id into their username
+    function username($id) {
+        db::pdo()->query('SELECT * FROM `users` WHERE `id` = :id LIMIT 1');
+            db::pdo()->bind(array(':id' => $id));
+        db::pdo()->execute();
+            if(db::pdo()->count() > 0):
+                foreach(db::pdo()->result() as $user):
+                    return sanitize($user->username);
+                endforeach;
             endif;
     }
 
@@ -51,7 +93,7 @@
         if(isset($_POST['change_theme']) and isset($_POST['new_theme']) and in_array(sanitize($_POST['new_theme']), $themes)):
             $new_theme = sanitize($_POST['new_theme']);
             setcookie('theme', $new_theme, time()+(60*60*24*365));
-            header('Location:'.$_SERVER['SCRIPT_NAME']);
+            header('Location:'.seo($_SERVER['SCRIPT_NAME']));
             exit();
         endif;
             if(isset($_COOKIE['theme']) and in_array(sanitize($_COOKIE['theme']), $themes)):
