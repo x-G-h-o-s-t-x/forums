@@ -47,8 +47,11 @@ nav ul li a.active {color:#7AA21B; background:#F0F0F0; border-top:1px solid #F0F
 .secondary-nav a {color:#000000; text-decoration:none;}
 
 .wrapper {width:90%; margin:10px auto 0px auto;}
-.register-header, .login-header, .forgot-header {background:#DADADA; color:#7AA21B; font-size:0.8rem; padding:5px; border:1px solid #DADADA;}
-.register-content, .login-content, .forgot-content {background:#FFFFFF; text-align:center; font-size:0.8rem; color:#408080; word-wrap:break-word; padding:5px; border:1px solid #DADADA; border-top:none;}
+.register-header, .login-header, .forgot-header, .online-header {background:#DADADA; color:#7AA21B; font-size:0.8rem; padding:5px; border:1px solid #DADADA;}
+.register-content, .login-content, .forgot-content, .online {background:#FFFFFF; text-align:center; font-size:0.8rem; color:#408080; word-wrap:break-word; padding:5px; border:1px solid #DADADA; border-top:none;}
+
+.online-header {text-align:center;}
+.online {text-align:left; min-height:50px;}
 
 .form-wrapper form {text-align:left; padding:30px 20px 0;}
 .form-item {margin-bottom:10px; width:100%;}

@@ -5,6 +5,8 @@
 <?php if(file_exists('core/config.php')): require('core/config.php'); else: die('Cannot Find Configuration File'); endif; ?>
 <?php debug($config->debug); ?>
 <?php user::init()->is_remembered(); ?>
+<?php online::init()->check_online(); ?>
+<?php online::init()->check_offline(); ?>
 <?php if(isset($_POST['forgot'])): ?>
     <?php $username = $_POST['username']; ?>
     <?php $authentication = $_POST['authentication']; ?>
@@ -61,8 +63,8 @@
             Thank You <?php echo $username; ?>. you can now login with your new password. " <b><?php echo $password; ?></b> "<br/>
             you will now be redirected back to the home page. in 5 seconds...
         <?php elseif(isset($forgotpassword) and $forgotpassword == false): ?>
-            Authentication Code Do Not Match Account.<br/>
-            Click <a href="<?php echo seo('forgot.php'); ?>">Here</a> To Try Again
+            Authentication Code Do Not Match Account.<br/><br/>
+            Click <a href="<?php echo seo('forgot.php'); ?>">here</a> to try again.<br/><br/>
         <?php else: ?>
             <div class="forgot">
                 <div class="form-wrapper">
@@ -98,5 +100,6 @@
         <div class="padder"></div>
     </footer>
 
+    <?php db::pdo()->close(); ?>
     </body>
 </html>

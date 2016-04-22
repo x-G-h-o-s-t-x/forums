@@ -5,6 +5,8 @@
 <?php if(file_exists('core/config.php')): require_once('core/config.php'); else: die('Cannot Find Configuration File'); endif; ?>
 <?php debug($config->debug); ?>
 <?php user::init()->is_remembered(); ?>
+<?php online::init()->check_online(); ?>
+<?php online::init()->check_offline(); ?>
 <!doctype html>
 <html lang="en">
 
@@ -43,11 +45,16 @@
         </div>
     </div>
 
+    <div class="wrapper">
+        <?php echo online::init()->display_all(); ?>
+    </div>
+
     <footer>
         <div class="footer-left"><?php echo theme_form(); ?></div>
         <div class="footer-right"><?php echo $copyright; ?></div>
         <div class="padder"></div>
     </footer>
 
+    <?php db::pdo()->close(); ?>
     </body>
 </html>

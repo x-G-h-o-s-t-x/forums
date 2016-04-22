@@ -5,6 +5,8 @@
 <?php if(file_exists('core/config.php')): require('core/config.php'); else: die('Cannot Find Configuration File'); endif; ?>
 <?php debug($config->debug); ?>
 <?php user::init()->is_remembered(); ?>
+<?php online::init()->check_online(); ?>
+<?php online::init()->check_offline(); ?>
 <?php if(isset($_POST['register'])): ?>
     <?php $username = $_POST['username']; ?>
     <?php $password = $_POST['password']; ?>
@@ -58,11 +60,12 @@
         <div class="register-content">
         <?php if(isset($register) and $register == true): ?>
             Welcome <?php echo sanitize($_SESSION['user']); ?><br/>
-            Thank You for registering with us. you will now be redirected back to the home page.<br/>in 5 seconds...
+            Thank You for registering with us. you will now be redirected back to the home page.<br/>
+            in 5 seconds...
         <?php elseif(isset($register) and $register == false): ?>
             Sorry either the username already exists or the length is to long/short.<br/>
             Please try again either with a different name or between 3 - 25 characters long.<br/><br/>
-            Click <a href="<?php echo seo('register.php'); ?>">Here</a> To Try Again<br/><br/>
+            Click <a href="<?php echo seo('register.php'); ?>">here</a> to try again.<br/><br/>
         <?php else: ?>
             <div class="register">
                 <div class="form-wrapper">
@@ -97,5 +100,6 @@
         <div class="padder"></div>
     </footer>
 
+    <?php db::pdo()->close(); ?>
     </body>
 </html>

@@ -5,6 +5,8 @@
 <?php if(file_exists('core/config.php')): require('core/config.php'); else: die('Cannot Find Configuration File'); endif; ?>
 <?php debug($config->debug); ?>
 <?php user::init()->is_remembered(); ?>
+<?php online::init()->check_online(); ?>
+<?php online::init()->check_offline(); ?>
 <?php if(isset($_POST['login'])): ?>
     <?php $username = $_POST['username']; ?>
     <?php $password = $_POST['password']; ?>
@@ -57,10 +59,11 @@
         <div class="login-content">
         <?php if(isset($login) and $login == true): ?>
             Welcome <?php echo sanitize($_SESSION['user']); ?><br/>
-            You have logged in successfully. you will now be redirected back to the home page.<br/>in 5 seconds...
+            You have logged in successfully. you will now be redirected back to the home page.<br/>
+            in 5 seconds...
         <?php elseif(isset($login) and $login == false): ?>
             Username And/Or Password Do Not Match.<br/><br/>
-            Click <a href="<?php echo seo('login.php'); ?>">Here</a> To Try Again<br/><br/>
+            Click <a href="<?php echo seo('login.php'); ?>">here</a> to try again.<br/><br/>
         <?php else: ?>
             <div class="login">
                 <div class="form-wrapper">
@@ -92,5 +95,6 @@
         <div class="padder"></div>
     </footer>
 
+    <?php db::pdo()->close(); ?>
     </body>
 </html>
