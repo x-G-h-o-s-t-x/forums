@@ -18,7 +18,7 @@ class online {
     private static $instance;
 
     // call to start the online instance
-    public static function init(){
+    public static function init() {
         $class = get_called_class(); // late-static-bound class name
             if(!isset(self::$instance[$class])):
                 self::$instance[$class] = new static;
@@ -90,8 +90,8 @@ class online {
                 $guests = '('.db::pdo()->count().') Guests';
             endif;
         $results = null;
-            $results .= '<div class="online-header">Currently '.$members.' And '.$guests.' Online</div>';
-            $results .= '<div class="online">';   
+            $results .= '<div class="online-header">'."\r\n".'Currently '.$members.' And '.$guests.' Online'."\r\n".'</div>'."\r\n";
+            $results .= '<div class="online">'."\r\n";   
         db::pdo()->query('SELECT * FROM `online` WHERE `uid` <> 0 AND `member` = "yes"');
         db::pdo()->execute();
             if(db::pdo()->count() > 0):
@@ -99,7 +99,7 @@ class online {
                     $results .= username($user->uid).', ';
                 endforeach;
             endif;
-            $results .= '</div>';
+            $results .= "\r\n".'</div>'."\r\n";
         return $results;
     }
 
@@ -124,8 +124,8 @@ class online {
                 $guests = '('.db::pdo()->count().') Guests';
             endif;
         $results = null;
-            $results .= '<div class="online-header">Currently '.$members.' And '.$guests.' Viewing</div>';
-            $results .= '<div class="online">';   
+            $results .= '<div class="online-header">'."\r\n".'Currently '.$members.' And '.$guests.' Viewing'."\r\n".'</div>'."\r\n";
+            $results .= '<div class="online">'."\r\n";   
         db::pdo()->query('SELECT * FROM `online` WHERE `uid` <> 0 AND `member` = "yes" AND `page` = :page');
             db::pdo()->bind(array(':page' => $page));
         db::pdo()->execute();
@@ -134,7 +134,7 @@ class online {
                     $results .= username($user->uid).', ';
                 endforeach;
             endif;
-            $results .= '</div>';
+            $results .= "\r\n".'</div>'."\r\n";
         return $results;
     }
 }
