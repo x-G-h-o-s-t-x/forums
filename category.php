@@ -7,16 +7,19 @@
 <?php user::init()->is_remembered(); ?>
 <?php online::init()->check_online(); ?>
 <?php online::init()->check_offline(); ?>
+<?php $cid = isset($_GET['cid']) ? (int)$_GET['cid'] : 0; ?>
+<?php $category = forums::init()->category_title($cid); ?>
+<?php $forum = forums::init()->forum_title($cid); ?>
 <!doctype html>
 <html lang="en">
 
 <head>
     <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title><?php echo $config->site_name; ?></title>
-    <link rel="stylesheet" type="text/css" href="core/css/<?php echo $theme; ?>.css" media="screen"/>
-    <link rel="shortcut icon" type="image/ico" href="core/images/celtic_cross.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title><?php echo $category; ?></title>
+    <link rel="stylesheet" type="text/css" href="core/css/<?php echo $theme; ?>.css" media="screen" />
+    <link rel="shortcut icon" type="image/ico" href="core/images/celtic_cross.ico" />
 </head>
     <body>
 
@@ -41,25 +44,18 @@
 
     <div class="secondary-nav">
         <div>
-            <a href="<?php echo seo('index.php'); ?>">Home</a>
+            <a href="<?php echo seo('index.php'); ?>">Home</a> &gt; 
+            <a href="<?php echo seo('index.php'); ?>"><?php echo $forum; ?></a> &gt; 
+            <a href="<?php echo seo('category.php?cid='.$cid); ?>"><?php echo $category; ?></a>
         </div>
     </div>
 
     <div class="wrapper">
-        <div class="forums-wrapper">
-            <?php echo forums::init()->forums(); ?>
-        </div>
-        <div class="sidebar-wrapper">
-            <?php echo forums::init()->new_topics(); ?>
-            <?php echo forums::init()->new_posts(); ?>
-        </div>
-        <div class="padder"></div>
+        <?php echo forums::init()->category(); ?>
     </div>
 
-    <?php echo statistics(); ?>
-
     <div class="wrapper">
-        <?php echo online::init()->display_all(); ?>
+        <?php echo online::init()->display_page(); ?>
     </div>
 
     <footer>
