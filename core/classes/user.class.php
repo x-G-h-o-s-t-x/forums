@@ -18,7 +18,7 @@ class user {
     private static $instance;
 
     // call to start the user instance
-    public static function init(){
+    public static function init() {
         $class = get_called_class(); // late-static-bound class name
             if(!isset(self::$instance[$class])):
                 self::$instance[$class] = new static;
@@ -27,7 +27,7 @@ class user {
     }
 
     // registration
-    public static function registration($username, $password, $authentication){
+    public static function registration($username, $password, $authentication) {
         db::pdo()->query('SELECT * FROM `users` WHERE `username` = :username LIMIT 1');
             db::pdo()->bind(array(':username' => $username));
         db::pdo()->execute();
@@ -60,7 +60,7 @@ class user {
     }
 
     // login
-    public static function login($username, $password){
+    public static function login($username, $password) {
         db::pdo()->query('SELECT * FROM `users` WHERE `username` = :username LIMIT 1');
             db::pdo()->bind(array(':username' => $username));
         db::pdo()->execute();
@@ -86,7 +86,7 @@ class user {
     }
 
     // logout
-    public static function logout(){
+    public static function logout() {
         if(isset($_COOKIE['remember'])):
             setcookie('remember[id]', '', time() -3600 * 24 * 365, '/');
             setcookie('remember[user]', '', time() -3600 * 24 * 365, '/');
@@ -98,7 +98,7 @@ class user {
     }
 
     // forgotpassword
-    public static function forgotpassword($username, $authentication, $password){
+    public static function forgotpassword($username, $authentication, $password) {
         db::pdo()->query('SELECT * FROM `users` WHERE `username` = :username LIMIT 1');
             db::pdo()->bind(array(':username' => $username));
         db::pdo()->execute();
@@ -120,7 +120,7 @@ class user {
     }
 
     // function to help secure user session hijacking attempts
-    public static function is_authentic(){
+    public static function is_authentic() {
         if(isset($_SESSION['user']) and !empty($_SESSION['user'])):
             db::pdo()->query('SELECT * FROM `users` WHERE `username` = :username LIMIT 1');
                 db::pdo()->bind(array(':username' => $_SESSION['user']));
@@ -139,7 +139,7 @@ class user {
     }
 
     // function to remember user if have selected to be remembered
-    public static function is_remembered(){
+    public static function is_remembered() {
         if(isset($_COOKIE['remember']) and !isset($_SESSION['user'])):
             db::pdo()->query('SELECT * FROM `users` WHERE `username` = :username LIMIT 1');
                 db::pdo()->bind(array(':username' => $_COOKIE['remember']['user']));
