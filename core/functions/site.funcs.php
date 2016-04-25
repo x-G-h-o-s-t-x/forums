@@ -1,4 +1,15 @@
 <?php
+// Prevent direct access from url to this file
+if(stristr(htmlentities($_SERVER['SCRIPT_NAME']), 'site.funcs.php')): // input your class file name here
+    header('Location:../../index.php'); // input your index location here
+    die();
+endif;
+
+/** ****************************************************
+  *                  @author: Ghost                    *
+  *                  @copyright: 2016                  *
+  **************************************************** **/
+
     // function to turn errors on/off for debugging
     function debug($true) {
         if($true == 'true'):
@@ -21,7 +32,8 @@
         $hours = floor($minutes / 60);
         $minutes -= $hours * 60;
         $offset = sprintf('%+d:%02d', $hours*$segment, $minutes);
-        db::pdo()->query('SET time_zone = "'.$offset.'";');
+        db::pdo()->query('SET time_zone = :timezone;');
+            db::pdo()->bind(array(':timezone' => $offset));
         db::pdo()->execute();
     }
 
@@ -84,6 +96,104 @@
             endif;
     }
 
+    // site statistics
+    function statistics() {
+        $results = null;
+        $results .= '<div class="stats">';
+        db::pdo()->query('SELECT * FROM `topics`');
+        db::pdo()->execute();
+        $results .= 'Topics <span class="stats-info">'.db::pdo()->count().'</span>';
+        db::pdo()->query('SELECT * FROM `posts`');
+        db::pdo()->execute();
+        $results .= 'Posts <span class="stats-info">'.db::pdo()->count().'</span>';
+        db::pdo()->query('SELECT * FROM `users`');
+        db::pdo()->execute();
+        $results .= 'Members <span class="stats-info">'.db::pdo()->count().'</span>';
+        db::pdo()->query('SELECT * FROM `users` ORDER BY `id` DESC LIMIT 1');
+        db::pdo()->execute();
+            if(db::pdo()->count() > 0):
+                foreach(db::pdo()->result() as $newest):
+                    $username = sanitize($newest->username);
+                endforeach;
+            endif;
+        $results .= 'New Member <span class="stats-info">'.$username.'</span>';
+        $results .= '</div>';
+        return $results;
+    }
+
+    // functions to display all members
+    function members() {
+        $results = null;
+        pagination::init()->paginator('SELECT * FROM `users` ORDER BY `id` DESC', null, 20, 5, null);
+        $results .= '<div class="members-header">Members</div>';
+        $results .= '<div class="members-content">';
+            if(pagination::init()->count() > 0):
+                foreach(pagination::init()->result() as $user):
+                    $results .= '('.$user->id.') - '.sanitize($user->username).'<hr class="members-list-hr"/>';
+                endforeach;
+            endif;
+        $results .= '</div>';
+        $results .= '<div class="members-content-pagination">'.pagination::init()->links().'</div>';
+        return $results;
+    }
+
+    // Function that will get a users rank from their id
+    function rank($id) {
+        db::pdo()->query('SELECT * FROM `users` WHERE `id` = :id LIMIT 1');
+            db::pdo()->bind(array(':id' => $id));
+        db::pdo()->execute();
+            if(db::pdo()->count() > 0):
+                foreach(db::pdo()->result() as $users):
+                    return $users->rank;
+                endforeach;
+            endif;
+    }
+
+    // Function that will convert a rank id into their rank name
+    function rank_status($id) {
+        db::pdo()->query('SELECT * FROM `ranks` WHERE `id` = :id LIMIT 1');
+            db::pdo()->bind(array(':id' => $id));
+        db::pdo()->execute();
+            if(db::pdo()->count() > 0):
+                foreach(db::pdo()->result() as $status):
+                    return $status->rank;
+                endforeach;
+            endif;
+    }
+
+    // bbcodes
+    function bbcodes($data) {
+        $data = preg_replace_callback('/\[php\](.*?)\[\/php\]/msi', create_function('$matches', '{
+            $matches[1] = html_entity_decode($matches[1], ENT_QUOTES, \'UTF-8\');
+                if(preg_match(\'/^(<\?|<\?php)\s*?.*?\s*?^\?>\s*?$/msi\', $matches[1], $new_matches)):
+                    $matches[1] = highlight_string($new_matches[0], 1);
+                else:
+                    $matches[1] = highlight_string(\'<?php\'.$matches[1], 1);
+                    $matches[1] = preg_replace(\'/&lt;\?php\s*?<br \/>(.*?<\/span>)/msi\', \'$1\', $matches[1]);
+                endif;
+            return \'<div class="codebox">\'.$matches[1].\'</div>\';
+        }') , $data);
+        $bbcode = array(
+            '\[url\](.*?)\[\/url\]' => '<a href="$1" target="_blank">$1</a>',
+            '\[url\=(.*?)\](.*?)\[\/url\]' => '<a href="$1" target="_BLANK">$2</a>',
+            '\[color\=(.*?)\](.*?)\[\/color\]' => '<span style="color:$1">$2</span>',
+            '\[h1\](.*?)\[\/h1\]' => '<h1>$1</h1>',
+            '\[h2\](.*?)\[\/h2\]' => '<h2>$1</h2>',
+            '\[h3\](.*?)\[\/h3\]' => '<h3>$1</h3>',
+            '\[h4\](.*?)\[\/h4\]' => '<h4>$1</h4>',
+            '\[h5\](.*?)\[\/h5\]' => '<h5>$1</h5>',
+            '\[h6\](.*?)\[\/h6\]' => '<h6>$1</h6>',
+            '\[small\](.*?)\[\/small\]' => '<small>$1</small>',
+            '\[b\](.*?)\[\/b\]' => '<b>$1</b>',
+            '\[i\](.*?)\[\/i\]' => '<i>$1</i>',
+            '\[u\](.*?)\[\/u\]' => '<u>$1</u>'
+        );
+            foreach($bbcode as $from => $to):
+                $data = preg_replace('/'.$from.'/msi', $to, $data);
+            endforeach;
+        return $data;
+    }
+
     // theme changer
     function theme() {
         $themes = array();
@@ -92,8 +202,8 @@
             endforeach;
         if(isset($_POST['change_theme']) and isset($_POST['new_theme']) and in_array(sanitize($_POST['new_theme']), $themes)):
             $new_theme = sanitize($_POST['new_theme']);
-            setcookie('theme', $new_theme, time()+(60*60*24*365));
-            header('Location:'.seo($_SERVER['SCRIPT_NAME']));
+            setcookie('theme', $new_theme, time() +3600 * 24 * 365, '/');
+            header('Location:'.seo($_SERVER['REQUEST_URI']));
             exit();
         endif;
             if(isset($_COOKIE['theme']) and in_array(sanitize($_COOKIE['theme']), $themes)):
@@ -115,7 +225,7 @@
     function theme_form(){
         $results = null;
         $themes = array();
-        $results .= '<form action="'.$_SERVER['SCRIPT_NAME'].'" method="post">';
+        $results .= '<form action="'.$_SERVER['REQUEST_URI'].'" method="post">';
         $results .= '<select name="new_theme">';
             foreach(glob('*/css/*.css') as $num => $css):
                 $themes[$num] = preg_replace('/^(.*?)\/css\/(.*?).css$/msi', '$2', $css);
