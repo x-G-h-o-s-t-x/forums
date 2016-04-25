@@ -1,8 +1,8 @@
 <?php session_start(); ?>
 <?php header('Content-type: text/html; charset=UTF-8'); ?>
-<?php foreach(glob('core/classes/*.php') as $class_file): include($class_file); endforeach; ?>
-<?php foreach(glob('core/functions/*.php') as $function_file): include($function_file); endforeach; ?>
-<?php if(file_exists('core/config.php')): require('core/config.php'); else: die('Cannot Find Configuration File'); endif; ?>
+<?php foreach(glob('core/classes/*.php') as $class_file): require_once($class_file); endforeach; ?>
+<?php foreach(glob('core/functions/*.php') as $function_file): require_once($function_file); endforeach; ?>
+<?php if(file_exists('core/config.php')): require_once('core/config.php'); else: die('Cannot Find Configuration File'); endif; ?>
 <?php debug($config->debug); ?>
 <?php user::init()->is_remembered(); ?>
 <?php online::init()->check_online(); ?>
