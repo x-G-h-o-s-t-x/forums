@@ -28,7 +28,7 @@ class pagination {
     private static $instance;
 
     // call to start the pagination instance
-    public static function init(){
+    public static function init() {
         $class = get_called_class(); // late-static-bound class name
             if(!isset(self::$instance[$class])):
                 self::$instance[$class] = new static;
