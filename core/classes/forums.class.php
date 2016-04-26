@@ -12,9 +12,9 @@ endif;
 
 class forums {
 
-    protected function __construct() {/** Thou shalt not construct that which is unconstructable! */}
-    protected function __clone() {/** Me not like clones! Me smash clones! */}
-    public function __wakeup() {throw new Exception("Cannot unserialize singleton");}
+    protected function __construct() { /** Thou shalt not construct that which is unconstructable! */ }
+    protected function __clone() { /** Me not like clones! Me smash clones! */ }
+    public function __wakeup() { throw new Exception('Cannot unserialize singleton'); }
     private static $instance;
 
     // call to start the forums instance
@@ -424,7 +424,7 @@ class forums {
                     $rank = $user->rank;
                 endforeach;
             endif;
-        db::pdo()->query('SELECT * FROM `online` WHERE `uid` = :id AND `member`="yes"');
+        db::pdo()->query('SELECT * FROM `online` WHERE `uid` = :id AND `member` = "yes"');
             db::pdo()->bind(array(':id' => $id));
         db::pdo()->execute();
             if(db::pdo()->count() > 0):
