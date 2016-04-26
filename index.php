@@ -31,6 +31,7 @@
         <ul>
             <li><a class="active" href="<?php echo seo('index.php'); ?>">Home</a></li>
         <?php if(user::init()->is_authentic()): ?>
+            <li><a href="<?php echo seo('cpanel.php'); ?>">Cpanel</a></li>
             <li><a href="<?php echo seo('logout.php'); ?>">Logout</a></li>
         <?php else: ?>
             <li><a href="<?php echo seo('login.php'); ?>">Login</a></li>
@@ -38,6 +39,8 @@
         <?php endif; ?>
         </ul>
     </nav>
+
+    <?php echo pm::init()->announcement(); ?>
 
     <div class="secondary-nav">
         <div>

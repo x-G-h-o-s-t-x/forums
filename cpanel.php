@@ -7,9 +7,8 @@
 <?php user::init()->is_remembered(); ?>
 <?php online::init()->check_online(); ?>
 <?php online::init()->check_offline(); ?>
-<?php $cid = isset($_GET['cid']) ? (int)$_GET['cid'] : 0; ?>
-<?php $category = forums::init()->category_title($cid); ?>
-<?php $forum = forums::init()->forum_title($cid); ?>
+<?php $staff_navigation = staff::init()->navigation(); ?>
+<?php $pm_navigation = pm::init()->navigation(); ?>
 <!doctype html>
 <html lang="en">
 
@@ -17,7 +16,11 @@
     <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title><?php echo $category; ?></title>
+<?php if(!user::init()->is_authentic()): ?>
+    <meta http-equiv="Refresh" content="0; url=<?php echo seo('index.php'); ?>" />
+    <?php die(); ?>
+<?php endif; ?>
+    <title><?php echo $config->site_name; ?></title>
     <link rel="stylesheet" type="text/css" href="core/css/<?php echo $theme; ?>.css" media="screen" />
     <link rel="shortcut icon" type="image/ico" href="core/images/celtic_cross.ico" />
 </head>
@@ -32,9 +35,9 @@
 
     <nav>
         <ul>
-            <li><a class="active" href="<?php echo seo('index.php'); ?>">Home</a></li>
+            <li><a href="<?php echo seo('index.php'); ?>">Home</a></li>
         <?php if(user::init()->is_authentic()): ?>
-            <li><a href="<?php echo seo('cpanel.php'); ?>">Cpanel</a></li>
+            <li><a class="active" href="<?php echo seo('cpanel.php'); ?>">Cpanel</a></li>
             <li><a href="<?php echo seo('logout.php'); ?>">Logout</a></li>
         <?php else: ?>
             <li><a href="<?php echo seo('login.php'); ?>">Login</a></li>
@@ -43,22 +46,24 @@
         </ul>
     </nav>
 
-    <?php echo pm::init()->announcement(); ?>
-
     <div class="secondary-nav">
         <div>
             <a href="<?php echo seo('index.php'); ?>">Home</a> &gt; 
-            <a href="<?php echo seo('index.php'); ?>"><?php echo $forum; ?></a> &gt; 
-            <a href="<?php echo seo('category.php?cid='.$cid); ?>"><?php echo $category; ?></a>
+            <a href="<?php echo seo('cpanel.php'); ?>">Cpanel</a> 
         </div>
     </div>
 
-    <div class="wrapper">
-        <?php echo forums::init()->category(); ?>
-    </div>
 
     <div class="wrapper">
-        <?php echo online::init()->display_page(); ?>
+        <div class="cpanel-left">
+            <?php echo pm::init()->navbar(); ?>
+            <?php echo staff::init()->navbar(); ?>
+        </div>
+        <div class="cpanel-right">
+            <?php echo $pm_navigation; ?>
+            <?php echo $staff_navigation; ?>
+        </div>
+        <div class="padder"></div>
     </div>
 
     <footer>

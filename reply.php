@@ -19,7 +19,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <?php if(!user::init()->is_authentic()): ?>
-    <meta http-equiv="Refresh" content="0; url=index.php" />
+    <meta http-equiv="Refresh" content="0; url=<?php echo seo('index.php'); ?>" />
     <?php die(); ?>
 <?php endif; ?>
     <title><?php echo $category; ?></title>
@@ -39,6 +39,7 @@
         <ul>
             <li><a class="active" href="<?php echo seo('index.php'); ?>">Home</a></li>
         <?php if(user::init()->is_authentic()): ?>
+            <li><a href="<?php echo seo('cpanel.php'); ?>">Cpanel</a></li>
             <li><a href="<?php echo seo('logout.php'); ?>">Logout</a></li>
         <?php else: ?>
             <li><a href="<?php echo seo('login.php'); ?>">Login</a></li>
@@ -46,6 +47,8 @@
         <?php endif; ?>
         </ul>
     </nav>
+
+    <?php echo pm::init()->announcement(); ?>
 
     <div class="secondary-nav">
         <div>

@@ -29,7 +29,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <?php if(isset($delete_topic) and $delete_topic == true): ?>
-    <meta http-equiv="Refresh" content="3; url=category.php?cid=<?php echo $cid; ?>" />
+    <meta http-equiv="Refresh" content="3; url=<?php echo seo('category.php?cid='.$cid); ?>" />
 <?php elseif(isset($delete_topic) and $delete_topic == false or isset($delete_post)): ?>
     <meta http-equiv="Refresh" content="3; url=<?php echo seo('topic.php?cid='.$cid.'&amp;tid='.$tid.'&amp;page=1'); ?>" />
 <?php endif; ?>
@@ -50,6 +50,7 @@
         <ul>
             <li><a class="active" href="<?php echo seo('index.php'); ?>">Home</a></li>
         <?php if(user::init()->is_authentic()): ?>
+            <li><a href="<?php echo seo('cpanel.php'); ?>">Cpanel</a></li>
             <li><a href="<?php echo seo('logout.php'); ?>">Logout</a></li>
         <?php else: ?>
             <li><a href="<?php echo seo('login.php'); ?>">Login</a></li>
@@ -57,6 +58,8 @@
         <?php endif; ?>
         </ul>
     </nav>
+
+    <?php echo pm::init()->announcement(); ?>
 
     <div class="secondary-nav">
         <div>

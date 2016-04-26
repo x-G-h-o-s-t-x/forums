@@ -12,9 +12,9 @@ endif;
 
 class staff {
 
-    protected function __construct() {/** Thou shalt not construct that which is unconstructable! */}
-    protected function __clone() {/** Me not like clones! Me smash clones! */}
-    public function __wakeup() {throw new Exception("Cannot unserialize singleton");}
+    protected function __construct() { /** Thou shalt not construct that which is unconstructable! */ }
+    protected function __clone() { /** Me not like clones! Me smash clones! */ }
+    public function __wakeup() { throw new Exception('Cannot unserialize singleton'); }
     private static $instance;
 
     // call to start the staff instance
@@ -100,7 +100,6 @@ class staff {
             'auto_delete_shouts' => 'Auto Delete Shouts: (true/false)',
             'show_shouts_to_guests' => 'Show Shouts To Guests: (true/false)',
         );
-
         $results .= '<div class="staff-cpanel-main-header">Site Config</div>';
         $results .= '<div class="staff-cpanel-main-content">';
         $results .= '<form action="?act=site_config" method="post">';
@@ -119,10 +118,14 @@ class staff {
     }
 
     public static function update_config() {
+        $allowed_columns = array();
+            foreach(self::config() as $keys => $values):
+                $allowed_columns[] .= $keys;
+            endforeach;
         foreach($_POST as $key => $value):
-            if($key != 'update_config'):
-                db::pdo()->query('UPDATE `config` SET :key = :value');
-                    db::pdo()->bind(array(':key' => $key, ':value' => $value));
+            if($key != 'update_config' and in_array($key, $allowed_columns)):
+                db::pdo()->query('UPDATE `config` SET `'.$key.'` = :value');
+                    db::pdo()->bind(array(':value' => $value));
                 db::pdo()->execute();
             endif;
         endforeach;
