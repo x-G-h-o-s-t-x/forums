@@ -7,19 +7,16 @@
 <?php user::init()->is_remembered(); ?>
 <?php online::init()->check_online(); ?>
 <?php online::init()->check_offline(); ?>
-<?php $cid = isset($_GET['cid']) ? (int)$_GET['cid'] : 0; ?>
-<?php $category = forums::init()->category_title($cid); ?>
-<?php $forum = forums::init()->forum_title($cid); ?>
 <!doctype html>
 <html lang="en">
 
 <head>
     <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title><?php echo $category; ?></title>
-    <link rel="stylesheet" type="text/css" href="core/css/<?php echo $theme; ?>.css" media="screen" />
-    <link rel="shortcut icon" type="image/ico" href="core/images/celtic_cross.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title><?php echo $config->site_name; ?> Search</title>
+    <link rel="stylesheet" type="text/css" href="core/css/<?php echo $theme; ?>.css" media="screen"/>
+    <link rel="shortcut icon" type="image/ico" href="core/images/celtic_cross.ico"/>
 </head>
     <body>
 
@@ -48,19 +45,24 @@
     <div class="secondary-nav">
         <div>
             <a href="<?php echo seo('index.php'); ?>">Home</a> &gt; 
-            <a href="<?php echo seo('index.php'); ?>"><?php echo $forum; ?></a> &gt; 
-            <a href="<?php echo seo('category.php?cid='.$cid); ?>"><?php echo $category; ?></a>
+            <a href="<?php echo seo('search.php'); ?>">Search</a>
         </div>
     </div>
 
     <div class="wrapper">
-        <div class="search-form">
+        <div class="search-header">
             <?php echo forums::init()->search_form(); ?>
         </div>
-    </div>
-
-    <div class="wrapper">
-        <?php echo forums::init()->category(); ?>
+        <div class="search-content">
+            <?php if(!empty($_POST['search'])): ?>
+                <?php $_SESSION['search'] = $_POST['search_data']; ?>
+            <?php endif; ?>
+            <?php if(isset($_SESSION['search'])): ?>
+                <?php echo forums::init()->search(); ?>
+            <?php else: ?>
+                Use The Form Above To Initiate A Search Query.
+            <?php endif; ?>
+        </div>
     </div>
 
     <div class="wrapper">

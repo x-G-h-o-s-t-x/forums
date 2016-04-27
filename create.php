@@ -67,6 +67,12 @@ form;
     </div>
 
     <div class="wrapper">
+        <div class="search-form">
+            <?php echo forums::init()->search_form(); ?>
+        </div>
+    </div>
+
+    <div class="wrapper">
         <div class="create-topic-header">Create Topic</div>
         <div class="create-topic-content">
         <?php if(isset($_POST['submit'])): ?>

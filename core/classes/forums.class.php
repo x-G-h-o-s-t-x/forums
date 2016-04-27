@@ -496,90 +496,74 @@ class forums {
             endif;
     }
 
+    /** function to build search form for use in header on pages */
+    public static function search_form() {
+        $results = null;
+        $results .= '<form action="search.php" method="post">'."\r\n";
+        $results .= '<input class="search-input" type="text" name="search_data" />'."\r\n";
+        $results .= '<input class="search-btn" type="submit" name="search" value="Search"/>'."\r\n";
+        $results .= '</form>'."\r\n";
+        return $results;
+    }
+
     /** function to search through created topics */
-    public static function search($data){
+    public static function search(){
         $results = null;
-            if($data == ''):
-                $results .= 'No Search Was Initiated As The Search Term Was Found To Be Blank<br/>';
-            else:
-                $found_word = explode(' ', trim($data));
-                    foreach($found_word as $number => $search_word):
-                        $search[$number] = '`title` LIKE "%'.trim($search_word).'%"';
-                    endforeach;
-                db::pdo()->query('SELECT * FROM `topics` WHERE :search');
-                    db::pdo()->bind(array(':search' => implode(' OR ', $search)));
-                db::pdo()->execute();
-                    if(db::pdo()->count() > 0):
-                        $results .= self::search_table($found_word, $search);
-                    else:
-                        $results .= 'Your Search Returned No Results, Try To Use More Words To Widen The Search.<br/>';
-                    endif;
-            endif;
-        return $results;
-    }
-
-    /** function to build a table for search results (part of search function) */
-    public static function search_table($found_word, $search) {
-        $results = null;
-        $results .= '<div class="category">';
-        $results .= '<div class="category-row">';
-        $results .= '<div class="category-cell-1">Topic Title</div>';
-        $results .= '<div class="category-cell-2">Last Poster</div>';
-        $results .= '<div class="category-cell-3">Replies</div>';
-        $results .= '<div class="category-cell-4">Views</div>';
-        $results .= '</div>';
-        $results .= self::search_topics($found_word, $search);
-        $results .= '</div>';
-        return $results;
-    }
-
-    /** function to display results found from a search (part of search_table function) */
-    public static function search_topics($found_word, $search) {
-        $results = null;
-        $topic_title = null;
-        $query = 'SELECT * FROM `topics` WHERE :search ORDER BY `reply_date` DESC';
-        $bind = array(':search' => implode(' OR ', $search));
-        pagination::init()->paginator($query, $bind, self::config()->topics_per_page, 5, 'cid='.$cid.'&amp;');
-            if(pagination::init()->count() > 0):
-                foreach(pagination::init()->result() as $topic):
-                    for($i=0; $i<count($found_word); $i++):
-                        $topic_title = preg_replace('/'.trim($found_word[$i]).'/i', '<b>$0</b>', sanitize($topic->title));
-                    endfor;
-                    $results .= '<div class="category-row">';
-                    $results .= '<div class="category-cell-1">';
-                    $results .= '<a href="'.seo('topic.php?cid='.$topic->category_id.'&amp;tid='.$topic->id.'&amp;page=1').'">'.$topic_title.'</a><br/>';
-                    $results .= 'Started by: '.username($topic->creator).' ';
-                    $results .= '<span>'.convert_datetime($topic->date).'</span>';
+        $data = isset($_SESSION['search']) ? $_SESSION['search'] : null;
+        if($data == ''):
+            $results .= 'No Search Was Initiated As The Search Term Was Found To Be Blank<br/>';
+        else:
+            $found_word = explode(' ', trim($data));
+                foreach($found_word as $number => $search_word):
+                    $search[$number] = '`title` LIKE ?';
+                    $bind[$number+1] = '%'.$search_word.'%';
+                endforeach;
+            db::pdo()->query('SELECT * FROM `topics` WHERE '.implode(' OR ', $search));
+                db::pdo()->bind($bind);
+            db::pdo()->execute();
+                if(db::pdo()->count() > 0):
+                    $results .= '<div class="search">';
+                    $results .= '<div class="search-row">';
+                    $results .= '<div class="search-cell-1">Topic Title</div>';
+                    $results .= '<div class="search-cell-2">Last Poster</div>';
+                    $results .= '<div class="search-cell-3">Replies</div>';
+                    $results .= '<div class="search-cell-4">Views</div>';
                     $results .= '</div>';
-                    $results .= '<div class="category-cell-2">';
-                    $postination = postination::init()->last_post($topic->category_id, $topic->id, self::config()->posts_per_page);
-                    db::pdo()->query('SELECT * FROM `posts` WHERE `category_id` = :cid AND `topic_id` = :tid AND `id` = :id LIMIT 1');
-                        db::pdo()->bind(array(':cid' => $topic->category_id, ':tid' => $topic->id, ':id' => $postination[0]));
-                    db::pdo()->execute();
-                        if(db::pdo()->count() > 0):
-                            foreach(db::pdo()->result() as $topic_post):
-                                $results .= username($topic_post->creator);
+                    $query = 'SELECT * FROM `topics` WHERE '.implode(' OR ', $search).' ORDER BY `reply_date` DESC';
+                    pagination::init()->paginator($query, $bind, self::config()->topics_per_page, 5, '');
+                        if(pagination::init()->count() > 0):
+                            foreach(pagination::init()->result() as $topic):
+                                for($i=0; $i<count($found_word); $i++):
+                                    $topic_title = preg_replace('/'.trim($found_word[$i]).'/i', '<b>$0</b>', sanitize($topic->title));
+                                endfor;
+                                $results .= '<div class="search-row">';
+                                $results .= '<div class="search-cell-1">';
+                                $results .= '<a href="'.seo('topic.php?cid='.$topic->category_id.'&amp;tid='.$topic->id.'&amp;page=1').'">'.$topic_title.'</a><br/>';
+                                $results .= 'Started by: '.username($topic->creator).' ';
+                                $results .= '<span>'.convert_datetime($topic->date).'</span>';
+                                $results .= '</div>';
+                                $results .= '<div class="search-cell-2">';
+                                $postination = postination::init()->last_post($topic->category_id, $topic->id, self::config()->posts_per_page);
+                                db::pdo()->query('SELECT * FROM `posts` WHERE `category_id` = :cid AND `topic_id` = :tid AND `id` = :id LIMIT 1');
+                                    db::pdo()->bind(array(':cid' => $topic->category_id, ':tid' => $topic->id, ':id' => $postination[0]));
+                                db::pdo()->execute();
+                                    if(db::pdo()->count() > 0):
+                                        foreach(db::pdo()->result() as $topic_post):
+                                            $results .= username($topic_post->creator);
+                                        endforeach;
+                                    endif;
+                                $results .= '</div>';
+                                $results .= '<div class="search-cell-3">'.self::count_topic_replies($topic->category_id, $topic->id).'</div>';
+                                $results .= '<div class="search-cell-4">'.$topic->views.'</div>';
+                                $results .= '</div>';
                             endforeach;
                         endif;
+        $results .= '<div class="search-content-pagination">'.pagination::init()->links().'</div>';
                     $results .= '</div>';
-                    $results .= '<div class="category-cell-3">'.self::count_topic_replies($topic->category_id, $topic->id).'</div>';
-                    $results .= '<div class="category-cell-4">'.$topic->views.'</div>';
-                    $results .= '</div>';
-                endforeach;
-            endif;
-        $results .= '<div class="category-content-pagination">'.pagination::init()->links().'</div>';
-        return $results;
-    }
-
-    /** function to build search form for use in header on pages */
-    public static function header_search() {
-        $results = null;
-        $results .= '<div class="search">';
-        $results .= '<form action="search.php" method="post">';
-        $results .= '<input class="search-input" type="text" name="search_data" />';
-        $results .= '<input class="search-button" type="submit" name="search" value="Search"/>';
-        $results .= '</form>';
-        $results .= '</div>';
+                else:
+                    $results .= 'Your Search Returned No Results, Try To Use More Words To Widen The Search.<br/>';
+                endif;
+        endif;
         return $results;
     }
 }

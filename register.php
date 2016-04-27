@@ -59,6 +59,12 @@
     </div>
 
     <div class="wrapper">
+        <div class="search-form">
+            <?php echo forums::init()->search_form(); ?>
+        </div>
+    </div>
+
+    <div class="wrapper">
         <div class="register-header">Register:</div>
         <div class="register-content">
         <?php if(isset($register) and $register == true): ?>

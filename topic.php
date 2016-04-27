@@ -71,6 +71,12 @@
     </div>
 
     <div class="wrapper">
+        <div class="search-form">
+            <?php echo forums::init()->search_form(); ?>
+        </div>
+    </div>
+
+    <div class="wrapper">
     <?php if(isset($delete_topic) and $delete_topic == true): ?>
         <div class="topic-header">Delete Topic</div>
         <div class="topic">

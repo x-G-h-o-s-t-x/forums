@@ -60,6 +60,12 @@
     </div>
 
     <div class="wrapper">
+        <div class="search-form">
+            <?php echo forums::init()->search_form(); ?>
+        </div>
+    </div>
+
+    <div class="wrapper">
         <div class="forgot-header">Forgot Password:</div>
         <div class="forgot-content">
         <?php if(isset($forgotpassword) and $forgotpassword == true): ?>

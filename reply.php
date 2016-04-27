@@ -60,6 +60,12 @@
     </div>
 
     <div class="wrapper">
+        <div class="search-form">
+            <?php echo forums::init()->search_form(); ?>
+        </div>
+    </div>
+
+    <div class="wrapper">
         <div class="reply-topic-header">Topic Reply</div>
         <div class="reply-topic-content">
         <?php if(isset($_POST['submit'])): ?>

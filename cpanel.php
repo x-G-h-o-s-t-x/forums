@@ -53,6 +53,11 @@
         </div>
     </div>
 
+    <div class="wrapper">
+        <div class="search-form">
+            <?php echo forums::init()->search_form(); ?>
+        </div>
+    </div>
 
     <div class="wrapper">
         <div class="cpanel-left">

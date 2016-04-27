@@ -58,6 +58,12 @@
     </div>
 
     <div class="wrapper">
+        <div class="search-form">
+            <?php echo forums::init()->search_form(); ?>
+        </div>
+    </div>
+
+    <div class="wrapper">
         <div class="login-header">Login:</div>
         <div class="login-content">
         <?php if(isset($login) and $login == true): ?>
