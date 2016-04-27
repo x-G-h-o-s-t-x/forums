@@ -123,11 +123,12 @@ class staff {
                 $allowed_columns[] .= $keys;
             endforeach;
         foreach($_POST as $key => $value):
-            if($key != 'update_config' and in_array($key, $allowed_columns)):
-                db::pdo()->query('UPDATE `config` SET `'.$key.'` = :value');
-                    db::pdo()->bind(array(':value' => $value));
-                db::pdo()->execute();
-            endif;
+            $key = preg_replace('/[^a-z0-9_]+/msi', '', $key);
+                if($key != 'update_config' and in_array($key, $allowed_columns)):
+                    db::pdo()->query('UPDATE `config` SET `'.$key.'` = :value');
+                        db::pdo()->bind(array(':value' => $value));
+                    db::pdo()->execute();
+                endif;
         endforeach;
         return header('Location:?act=site_config');
     }
