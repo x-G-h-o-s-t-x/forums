@@ -167,9 +167,11 @@ endif;
             $matches[1] = html_entity_decode($matches[1], ENT_QUOTES, \'UTF-8\');
                 if(preg_match(\'/^(<\?|<\?php)\s*?.*?\s*?^\?>\s*?$/msi\', $matches[1], $new_matches)):
                     $matches[1] = highlight_string($new_matches[0], 1);
+                    $matches[1] = str_replace(array("<br />\r\n", "<br />\r", "<br />\n"), "", nl2br($matches[1]));
                 else:
                     $matches[1] = highlight_string(\'<?php\'.$matches[1], 1);
                     $matches[1] = preg_replace(\'/&lt;\?php\s*?<br \/>(.*?<\/span>)/msi\', \'$1\', $matches[1]);
+                    $matches[1] = str_replace(array("<br />\r\n", "<br />\r", "<br />\n"), "", nl2br($matches[1]));
                 endif;
             return \'<div class="codebox">\'.$matches[1].\'</div>\';
         }') , $data);
@@ -191,7 +193,7 @@ endif;
             foreach($bbcode as $from => $to):
                 $data = preg_replace('/'.$from.'/msi', $to, $data);
             endforeach;
-        return $data;
+        return nl2br($data);
     }
 
     // theme changer
