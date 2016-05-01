@@ -191,3 +191,10 @@ nav ul li a.active {color:#96C7D7; background:#212121; border-top:1px solid #3E3
 .search-header form .search-btn:hover, .wrapper form .search-btn:hover {cursor:pointer; color:#96C7D7;}
 .search-content {text-align:left;}
 .search-form {text-align:right;}
+
+.shoutbox-header {background:#242424; color:#96C7D7; font-size:0.8rem; padding:5px; border:1px solid #3E3E3E;}
+.shoutbox-content {background:#292929; text-align:left; font-size:0.8rem; color:#408080; word-wrap:break-word; padding:5px; border:1px solid #3E3E3E; border-top:none; height:120px; overflow:auto;}
+.shoutbox-form {background:#242424; color:#96C7D7; font-size:0.8rem; margin:0px auto; border:1px solid #3E3E3E; padding:5px; border-top:none;}
+.shoutbox-input {width:30%; background:#292929; color:#408080; border:1px solid #3E3E3E; border-radius:2px; padding:2px;}
+.shoutbox-submit-btn {cursor:pointer; color:#408080; background:#292929; margin:0px auto; padding:2px; border:1px solid #3E3E3E; border-radius:2px;}
+.shoutbox-submit-btn:hover {cursor:pointer; color:#96C7D7;}

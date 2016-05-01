@@ -17,6 +17,7 @@
     <title><?php echo $config->site_name; ?></title>
     <link rel="stylesheet" type="text/css" href="core/css/<?php echo $theme; ?>.css" media="screen"/>
     <link rel="shortcut icon" type="image/ico" href="core/images/celtic_cross.ico"/>
+    <script type="text/javascript" src="core/js/jquery-1.11.1.min.js"></script>
 </head>
     <body>
 
@@ -47,6 +48,8 @@
             <a href="<?php echo seo('index.php'); ?>">Home</a>
         </div>
     </div>
+
+    <?php require_once('shoutbox.php'); ?>
 
     <div class="wrapper">
         <div class="search-form">
