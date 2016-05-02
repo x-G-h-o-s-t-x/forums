@@ -1,6 +1,5 @@
 ##### db class usage examples:
 ```php
-require_once('pdo.class.php');
 // multi row table
 db::pdo()->query('SELECT * FROM `categories`');
 // or with bind
