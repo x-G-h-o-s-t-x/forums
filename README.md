@@ -35,6 +35,9 @@ $links_per_page = 5;
 $append_to_links = 'cid='.$cid.'&amp;';
 $query = 'SELECT * FROM `topics` WHERE `category_id` = :cid ORDER BY `reply_date` DESC';
 $bind = array(':cid' => $cid);
+// or without bind
+// $query = 'SELECT * FROM `topics` WHERE `category_id` = "1" ORDER BY `reply_date` DESC';
+// $bind = null;
 pagination::init()->paginator($query, $bind, $topics_per_page, $links_per_page, $append_to_links);
 	if(pagination::init()->count() > 0):
 		foreach(pagination::init()->result() as $topic):
