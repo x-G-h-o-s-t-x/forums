@@ -247,10 +247,11 @@ class forums {
                                 $postination = postination::init()->latest_topic_posts($topic_post->category_id, $topics->topic_id, $topics->date, self::config()->posts_per_page);
                                 $results .= '<div class="new-posts">';
                                 $results .= '<b><a href="'.seo('topic.php?cid='.$topic_post->category_id.'&amp;tid='.$topics->topic_id.'&amp;page='.$postination[1]).'#'.$postination[0].'">'.sanitize($topic_post->title).'</a></b><br/>';
+                                $arr = array("<br/>\r\n", "<br/>\r", "<br/>\n", '<br/>', "\r\n", "\r", "\n", '[php]', '[/php]');
                                     if(strlen($topics->content) > 30):
-                                        $results .= substr(str_replace(array("<br/>\r\n", "<br/>\r", "<br/>\n", '<br/>', "\r\n", "\r", "\n"), ' ', sanitize($topics->content)), 0, 30).'...<br/>';
+                                        $results .= substr(str_replace($arr, ' ', sanitize($topics->content)), 0, 30).'...<br/>';
                                     else:
-                                        $results .= str_replace(array("<br/>\r\n", "<br/>\r", "<br/>\n", '<br/>', "\r\n", "\r", "\n"), ' ',  sanitize($topics->content)).'<br/>';
+                                        $results .= str_replace($arr, ' ',  sanitize($topics->content)).'<br/>';
                                     endif;
                                 $results .= 'by '.username($topics->creator).', ';
                                 $results .= '<span>';
