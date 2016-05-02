@@ -1,4 +1,15 @@
 <?php
+// Prevent direct access from url to this file
+if(stristr(htmlentities($_SERVER['SCRIPT_NAME']), 'shoutbox.class.php')): // input your class file name here
+    header('Location:../../index.php'); // input your index location here
+    die();
+endif;
+
+/** ****************************************************
+  *                  @author: Ghost                    *
+  *                  @copyright: 2016                  *
+  **************************************************** **/
+
 class shoutbox {
 
     protected function __construct() { /** Thou shalt not construct that which is unconstructable! */ }
