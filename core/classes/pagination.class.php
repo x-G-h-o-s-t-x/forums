@@ -94,7 +94,7 @@ class pagination {
 
     // function to create the first link
     public function first() {
-        $first = '<div class="pagination-first"><div class="pagination-arrow-left"></div><div class="pagination-arrow-left"></div></div>';
+        $first = '<div class="pagination-first">&laquo;</div>';
             if($this->total_rows == 0):
                 return false;
             endif;
@@ -107,7 +107,7 @@ class pagination {
 
     // function to create the previous link
     public function prev() {
-        $prev = '<div class="pagination-arrow-left"></div>';
+        $prev = '<div class="pagination-prev">&lsaquo;</div>';
             if($this->total_rows == 0):
                 return false;
             endif;
@@ -120,7 +120,7 @@ class pagination {
 
     // function to create the next link
     public function next() {
-        $next = '<div class="pagination-arrow-right"></div>';
+        $next = '<div class="pagination-next">&rsaquo;</div>';
             if($this->total_rows == 0):
                 return false;
             endif;
@@ -133,7 +133,7 @@ class pagination {
 
     // function to create the last link
     public function last() {
-        $last = '<div class="pagination-last"><div class="pagination-arrow-right"></div><div class="pagination-arrow-right"></div></div>';
+        $last = '<div class="pagination-last">&raquo;</div>';
             if($this->total_rows == 0):
                 return false;
             endif;
@@ -161,9 +161,9 @@ class pagination {
             else:
                 for($i = $start; $i <= $end; $i ++):
                     if($i == $this->page):
-                        $links .= '<span class="pagination_link_active">'.$i.'</span> ';
+                        $links .= '<span class="pagination-active">'.$i.'</span> ';
                     else:
-                        $links .= '<a class="pagination_link" href="'.$this->seo($this->file_name.'?'.$this->append.'page='.$i).'">'.$i.'</a> ';
+                        $links .= '<a class="pagination-link" href="'.$this->seo($this->file_name.'?'.$this->append.'page='.$i).'">'.$i.'</a> ';
                     endif;
                 endfor;
             endif;

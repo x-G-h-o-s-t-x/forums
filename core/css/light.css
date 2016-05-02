@@ -179,11 +179,9 @@ nav ul li a.active {color:#7AA21B; background:#F0F0F0; border-top:1px solid #F0F
 
 .topic-footer-reply-btn:hover, .private-footer-reply-btn:hover, .staff-delete-btn:hover, .create-topic-btn:hover, .private-compose-btn:hover, .private-delete-btn:hover, .staff-site-config-btn:hover {cursor:pointer; color:#577A9C;} /** this */
 
-.pagination_link {padding:2px 2px 2px 2px; margin:0px auto 0px auto; color:#7AA21B;}
-.pagination_link_active {padding:2px 3px 2px 2px; background:#FFFFFF; text-decoration:none; margin:0px auto 0px auto; border-radius:2px;}
-.pagination-arrow-right {display:inline-block; width:0; height:0; border-style:solid; border-width:5px 0 5px 10px; border-color:transparent transparent transparent #A2CD5A; line-height:0px;}
-.pagination-arrow-left {display:inline-block; width:0; height:0; border-style:solid; border-width:5px 10px 5px 0; border-color:transparent #A2CD5A transparent transparent; line-height:0px;}
-.pagination-last, .pagination-first {display:inline-block;}
+.pagination-link {padding:2px 2px 2px 2px; margin:0px auto 0px auto; color:#7AA21B;}
+.pagination-active {padding:2px 3px 2px 2px; background:#FFFFFF; text-decoration:none; margin:0px auto 0px auto; border-radius:2px;}
+.pagination-first, .pagination-prev, .pagination-next, .pagination-last {display:inline-block; font-size:1.0rem; color:#7AA21B;}
 
 .search-header form, .wrapper form {padding:0; margin:0;}
 .search-header form .search-input, .wrapper form .search-input {width:20%; background:#FFFFFF; color:#408080; border:1px solid #DADADA; border-radius:2px; padding:3px; outline-color:#7AA21B;}
