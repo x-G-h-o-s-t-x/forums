@@ -4,8 +4,7 @@
 db::pdo()->query('SELECT * FROM `categories`');
 // or with bind
 //db::pdo()->query('SELECT * FROM `categories` WHERE `id` = :id');
-//$placeholders = array(':id' => '1');
-//db::pdo()->bind($placeholders);
+//db::pdo()->bind(array(':id' => '1'));
 db::pdo()->execute();
 if(db::pdo()->count() > 0):
     foreach(db::pdo()->result() as $category):
