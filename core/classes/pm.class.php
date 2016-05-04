@@ -140,10 +140,15 @@ class pm {
                         $results .= '</div>';
                     endforeach;
                 $results .= '<div class="private-main-footer">';
+                $results .= '<div class="left">';
                 $results .= '<input class="private-delete-btn" type="submit" name="delete_inbox" value="Delete" />';
-                $results .= '</form>';
+                $results .= '</div>';
+                $results .= '<div class="right">';
                 $results .= pagination::init()->links();
                 $results .= '</div>';
+                $results .= '<div class="padder"></div>';
+                $results .= '</div>';
+                $results .= '</form>';
             else:
         $results .= '<div class="private-main-content">You have no messages in your inbox.<br/></div>';
         $results .= '<div class="private-main-footer"></div>';
@@ -170,10 +175,15 @@ class pm {
                         $results .= '</div>';
                     endforeach;
                 $results .= '<div class="private-main-footer">';
+                $results .= '<div class="left">';
                 $results .= '<input class="private-delete-btn" type="submit" name="delete_outbox" value="Delete" />';
-                $results .= '</form>';
+                $results .= '</div>';
+                $results .= '<div class="right">';
                 $results .= pagination::init()->links();
                 $results .= '</div>';
+                $results .= '<div class="padder"></div>';
+                $results .= '</div>';
+                $results .= '</form>';
             else:
         $results .= '<div class="private-main-content">You have no messages in your outbox.<br/></div>';
         $results .= '<div class="private-main-footer"></div>';

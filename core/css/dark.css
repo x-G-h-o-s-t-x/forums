@@ -163,7 +163,10 @@ nav ul li a.active {color:#96C7D7; background:#212121; border-top:1px solid #3E3
 
 .private-main-content {text-align:left;}
 .private-main-content span {font-size:0.7rem;}
-.private-main-footer {font-size:0.8rem; background:#242424; color:#408080; min-height:20px; border:1px solid #3E3E3E; text-align:left; margin:0px auto 0px auto; padding:5px; border-top:none;}
+.private-main-footer {font-size:0.8rem; background:#242424; color:#408080; min-height:20px; border:1px solid #3E3E3E; margin:0px auto 0px auto; padding:5px; border-top:none;}
+.private-main-footer .left {float:left; text-align:left; width:50%;}
+.private-main-footer .right {float:left; text-align:right; width:50%;}
+.private-main-footer .padder {height:0; clear:both;}
 
 .private-compose-input {width:80%; background:#292929; color:#408080; border:1px solid #3E3E3E; border-radius:2px; margin:0px auto 10px auto; padding:5px;}
 .private-compose-textarea {width:80%; height:150px; background:#292929; color:#408080; border:1px solid #3E3E3E; border-radius:2px; margin:0px auto 10px auto; padding:5px;}
