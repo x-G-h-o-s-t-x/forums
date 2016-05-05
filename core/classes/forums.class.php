@@ -43,7 +43,7 @@ class forums {
             else:
                 $announcement = '<br/>'.sanitize(self::config()->announcement);
             endif;
-        $results .= 'Announcement Board:'.$announcement;
+        $results .= '<u><b>Announcement Board:</b></u>'.$announcement;
         $results .= '</div></div>';
         return $results;
     }
