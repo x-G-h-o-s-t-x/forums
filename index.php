@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <?php require_once('shoutbox.php'); ?>
+    <?php echo shoutbox::init()->shoutbox(); ?>
 
     <?php echo forums::init()->announcement(); ?>
 

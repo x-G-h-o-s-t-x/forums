@@ -1,8 +1,10 @@
 <?php
 session_start();
 /** ****************************************************
-  *                  @author: Ghost                    *
-  *                  @copyright: 2016                  *
+  *                @author: Ghost                      *
+  *                @copyright: 2016                    *
+  *                @description: this file is used by  *
+  *                the jquery part of the shoutbox     *
   **************************************************** **/
 foreach(glob('core/classes/*.php') as $class_file): require_once($class_file); endforeach;
 foreach(glob('core/functions/*.php') as $function_file): require_once($function_file); endforeach;

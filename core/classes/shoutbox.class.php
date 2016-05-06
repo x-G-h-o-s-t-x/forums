@@ -43,7 +43,7 @@ class shoutbox {
         endif;
     }
 
-    public static function display() {
+    public static function shoutouts() {
         $results = null;
             if(preg_match('/true/i', self::config()->auto_delete_shouts)):
                 db::pdo()->query('SELECT * FROM `shouts` ORDER BY `id` DESC');
@@ -57,7 +57,7 @@ class shoutbox {
         db::pdo()->execute();
             if(db::pdo()->count() > 0):
                 foreach(db::pdo()->result() as $shout):
-                    $results .= '['.gmdate('h:ia', strtotime($shout->time)).'] '.sanitize($shout->username).': '.sanitize($shout->shout).'<br/>'."\r\n";
+                    $results .= '['.date('h:ia', strtotime($shout->time)).'] '.sanitize($shout->username).': '.sanitize($shout->shout).'<br/>'."\r\n";
                 endforeach;
             else:
                 db::pdo()->query('SHOW TABLE STATUS LIKE "shouts"');
@@ -68,6 +68,40 @@ class shoutbox {
                             db::pdo()->execute();
                         endif;
                     endforeach;
+            endif;
+        return $results;
+    }
+
+    public static function shoutbox() {
+        $results = null;
+            if(!user::init()->is_authentic() and preg_match('/true/i', self::config()->show_shouts_to_guests) or user::init()->is_authentic()):
+                if(user::init()->is_authentic() and isset($_POST['shout'])):
+                    self::shout($_SESSION['user'], $_POST['post']);
+                    $_SESSION['shout'] = $_POST['post'];
+                endif;
+                $results .= '<script type="text/javascript" src="core/js/shout_idle.js"></script>'."\r\n";
+                $results .= '<div class="wrapper">'."\r\n";
+                $results .= '<script type="text/javascript" src="core/js/shout_hide.js"></script>'."\r\n";
+                $results .= '<div class="shoutbox-header">'."\r\n";
+                $results .= 'Shoutbox <a id="shoutbox-refresh" href="'.$_SERVER['SCRIPT_NAME'].'">[refresh]</a>'."\r\n";
+                $results .= '</div>'."\r\n";
+                $results .= '<div class="shoutbox-announcement" id="shoutbox-announcement"></div>'."\r\n";
+                $results .= '<div class="shoutbox-content" id="shoutbox-content">'."\r\n";
+                $results .= self::shoutouts();
+                $results .= '</div>'."\r\n";
+                $results .= '<div class="shoutbox-form" id="shoutbox-form">'."\r\n";
+                    if(user::init()->is_authentic()):
+                        $results .= '<script type="text/javascript" src="core/js/shout_hijack.js"></script>'."\r\n";
+                        $results .= '<form action="'.$_SERVER['SCRIPT_NAME'].'" method="post" id="shout_form">'."\r\n";
+                        $results .= '<input class="shoutbox-input" type="text" name="post" id="post" value="" maxlength="300"/>'."\r\n";
+                        $results .= '<input class="shoutbox-submit-btn" name="shout" id="shout" value="Shout" type="submit"/>'."\r\n";
+                        $results .= '</form>'."\r\n";
+                        $results .= '<script type="text/javascript" src="core/js/shout.js"></script>'."\r\n";
+                    else:
+                        $results .= 'You must be logged in to use the shoutbox'."\r\n";
+                    endif;
+                $results .= '</div>'."\r\n";
+                $results .= '</div>'."\r\n";
             endif;
         return $results;
     }
